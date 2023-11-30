@@ -9,16 +9,19 @@ It provides the following benefits over "traditional" cryptocurrency payments:
 
 ### Contract Deployments
 
-As of November 15, 2023, the Commerce Onchain Payment Protocol is deployed in the following locations:
+As of November 17, 2023, the Commerce Onchain Payment Protocol is deployed in the following locations:
 
 | Chain    | Environment    | Address                                      |
-|----------|----------------|----------------------------------------------|
-| Ethereum | Mainnet        | `0x131642c019AF815Ae5F9926272A70C84AE5C37ab` |
-| Ethereum | Goerli Testnet | `0x6F4bf00C7f081c5671A263bb65702c45B8dD9890` |
-| Polygon  | Mainnet        | `0x48073112c8C48e2550Bd42E4CD0aA483a416c5af` |
-| Polygon  | Mumbai Testnet | `0xeF0D482Daa16fa86776Bc582Aff3dFce8d9b8396` |
-| Base     | Mainnet        | `0x30E95edE0b3C7Ef147EE97A5e88FdE06311EA11f` |
-| Base     | Goerli Testnet | `0x71B3Ba7607Abd0cd35EB398c2a38313f10aa3FdB` |
+| -------- | -------------- | -------------------------------------------- |
+| Ethereum | Mainnet        | `0x7915f087685fffD71608E5d118f3B70c27D9eF4e` |
+| Ethereum | Goerli Testnet | `0xE63Fb3A3cd48Df6A336560a91F78Ac6013557F7D` |
+| Polygon  | Mainnet        | `0x7f52269092F2a5EF06C36C91e46F9196deb90336` |
+| Polygon  | Mumbai Testnet | `0xe810B03C6a930A3A04F93a1Eb5B77Fa958522c98` |
+| Base     | Mainnet        | `0x9Bb4D44e6963260A1850926E8f6bEB8d5803836F` |
+| Base     | Goerli Testnet | `0x131642c019AF815Ae5F9926272A70C84AE5C37ab` |
+
+Since the contract is non-upgradeable, these addresses will change when new
+versions are deployed.
 
 ### Browsing this Repo
 
@@ -26,3 +29,95 @@ The core source code can be found in [Transfers.sol](contracts/transfers/Transfe
 
 Excluded from this repo is a copy of [Uniswap/permit2](https://github.com/Uniswap/permit2),
 which would be copied to `contracts/permit2` in order to compile.
+
+## Overview
+
+### Operators
+
+The Transfers contract facilitates payments from a payer to a merchant. Before
+it may be used, an "operator" must register with the contract and specify
+a destination for fees. This operator is responsible for setting merchants up
+with the protocol and providing a UI for both merchants and payers to interact
+with it. Registering as an operator is permissionless, and Coinbase maintains
+control of an address used as the operator for Coinbase Commerce.
+
+### Transfer Intents
+
+Once an operator is registered, they may begin facilitating payments. Individual
+payments use a primitive called a `TransferIntent`, represented by a Solidity
+struct of the same name. This struct specifies the following:
+
+- The merchant's address
+- The currency the merchant wishes to receive
+- The amount of that currency the merchant wishes to receive
+- The deadline by which the payment must be made
+- The payer's address
+- The chain the payer will pay on
+- The address any refund should be directed to
+- The operator who is facilitating the payment
+- The fee the operator should receive
+- A unique identifier for identifying the payment
+- A signature (and optional signature prefix) from the operator
+
+Along with these attributes, a `TransferIntent` must be signed by the operator.
+This allows an operator to be selective about what payments to allow based on
+internal policies, legal requirements, or other reasons. It also ensures that
+a `TransferIntent` cannot be forged or have its data modified in any way.
+
+### Contract Guarantees
+
+The contract ensures that, for a given valid `TransferIntent`:
+
+- The merchant always receives the exact amount requested
+- The merchant never receives payments past a stated deadline
+- The merchant never receives more than one payment
+- Payments may be made using the merchant's requested currency, or swapped from
+  another token as part of the payment transaction
+- Unsuccessful or partial payments will never reach the merchant, thus
+  guaranteeing that payments are atomic. Either the merchant is correctly paid
+  in full and the fee is correctly charged, or the transaction reverts and no
+  state is changed onchain.
+
+### Contract payment methods
+
+Depending on the settlement token and the input token, along with the way
+in which the payer allows movement of their input token, a frontend must select
+the appropriate method by which to pay a `TransferIntent`. These methods are:
+
+- `transferNative`: The merchant wants ETH and the payer wants to pay ETH
+- `transferToken`: The merchant wants a token and the payer wants to pay with
+  that token. Uses Permit2 for token movement.
+- `transferTokenPreApproved`: Same as `transferToken`, except the Transfers
+  contract is directly approved by the payer for the payment token
+- `wrapAndTransfer`: The merchant wants WETH and the payer wants to pay ETH
+- `unwrapAndTransfer`: The merchant wants ETH and the payer wants to pay WETH
+- `unwrapAndTransferPreApproved`: Same as `unwrapAndTransfer`, except the
+  Transfers contract is directly approved by the payer for WETH
+- `swapAndTransferUniswapV3Native`: The merchant wants a token and the payer
+  wants to pay ETH. The token must have sufficient liquidity with ETH on Uniswap
+  V3.
+- `swapAndTransferUniswapV3Token`: The merchant wants either ETH or a token and
+  the payer wants to pay with a different token. The payment token must have
+  sufficient liquidity with the settlement token on Uniswap V3.
+- `swapAndTransferUniswapV3TokenPreApproved`: Same as
+  `swapAndTransferUniswapV3Token`, except the Transfers contract is directly
+  approved by the payer for the payment token
+
+For any EVM-compatible network where ETH is not the native/gas currency, the
+above descriptions should substitute that currency. For example, payments on
+Polygon would use MATIC in the above descriptions.
+
+### Payment Transaction Results
+
+When the payment is successful, a `Transferred` event is emitted by the contract
+with details about:
+
+- The operator address
+- The unique id of the `TransferIntent`
+- The merchant (recipient) address
+- The payer (sender) address
+- The input token that was spent by the payer
+- The amount of the input token spent by the payer
+
+In the case of errors, a specific error type is returned with details about what
+went wrong.
