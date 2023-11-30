@@ -21,6 +21,11 @@ abstract contract Sweepable is Context, Ownable {
         _;
     }
 
+    modifier notZero(address a) {
+        require(a != address(0), "Sweepable: cannot be zero address");
+        _;
+    }
+
     // @dev Returns the current sweeper
     function sweeper() public view virtual returns (address) {
         return _sweeper;
@@ -28,12 +33,12 @@ abstract contract Sweepable is Context, Ownable {
 
     // @dev Sets the sweeper
     // @notice To remove the sweeper role entirely, set this to the zero address.
-    function setSweeper(address newSweeper) public virtual onlyOwner {
+    function setSweeper(address newSweeper) public virtual onlyOwner notZero(newSweeper) {
         _sweeper = newSweeper;
     }
 
     // @dev Sweeps the entire ETH balance to `destination`
-    function sweepETH(address payable destination) public virtual onlySweeper {
+    function sweepETH(address payable destination) public virtual onlySweeper notZero(destination) {
         uint256 balance = address(this).balance;
         require(balance > 0, "Sweepable: zero balance");
         (bool success, ) = destination.call{value: balance}("");
@@ -41,7 +46,12 @@ abstract contract Sweepable is Context, Ownable {
     }
 
     // @dev Sweeps a specific ETH `amount` to `destination`
-    function sweepETHAmount(address payable destination, uint256 amount) public virtual onlySweeper {
+    function sweepETHAmount(address payable destination, uint256 amount)
+        public
+        virtual
+        onlySweeper
+        notZero(destination)
+    {
         uint256 balance = address(this).balance;
         require(balance >= amount, "Sweepable: insufficient balance");
         (bool success, ) = destination.call{value: amount}("");
@@ -49,7 +59,7 @@ abstract contract Sweepable is Context, Ownable {
     }
 
     // @dev Sweeps the entire token balance to `destination`
-    function sweepToken(address _token, address destination) public virtual onlySweeper {
+    function sweepToken(address _token, address destination) public virtual onlySweeper notZero(destination) {
         IERC20 token = IERC20(_token);
         uint256 balance = token.balanceOf(address(this));
         require(balance > 0, "Sweepable: zero balance");
@@ -61,7 +71,7 @@ abstract contract Sweepable is Context, Ownable {
         address _token,
         address destination,
         uint256 amount
-    ) public virtual onlySweeper {
+    ) public virtual onlySweeper notZero(destination) {
         IERC20 token = IERC20(_token);
         uint256 balance = token.balanceOf(address(this));
         require(balance >= amount, "Sweepable: insufficient balance");

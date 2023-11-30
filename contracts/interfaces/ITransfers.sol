@@ -104,6 +104,10 @@ interface ITransfers {
     // @notice Raised when an intent has already been processed
     error AlreadyProcessed();
 
+    // @notice Raised when a transfer does not result in the correct balance increase,
+    // such as with fee-on-transfer tokens
+    error InexactTransfer();
+
     // @notice Raised when a swap fails and returns a reason string
     // @param reason The error reason returned from the swap
     error SwapFailedString(string reason);
