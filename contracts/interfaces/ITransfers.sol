@@ -35,6 +35,11 @@ struct Permit2SignatureTransferData {
     bytes signature;
 }
 
+struct EIP2612SignatureTransferData {
+    address owner; // The owner of the funds
+    bytes signature; // The signature for the permit
+}
+
 // @title Transfers Contract
 // @notice Functions for making checked transfers between accounts
 interface ITransfers {
@@ -116,6 +121,9 @@ interface ITransfers {
     // @param reason The error reason returned from the swap
     error SwapFailedBytes(bytes reason);
 
+    // @notice Raised when the EIP2612 signature is invalid
+    error InvalidEIP2612Signature();
+
     // @notice Send the exact amount of the native currency from the sender to the recipient.
     // @dev The intent's recipient currency must be the native currency.
     // @param _intent The intent which describes the transfer
@@ -188,5 +196,13 @@ interface ITransfers {
         address _tokenIn,
         uint256 maxWillingToPay,
         uint24 poolFeesTier
+    ) external;
+
+    // @notice Allows the sender to pay for an intent with gasless transaction
+    // @param _intent The intent which describes the transfer
+    // @param _signatureTransferData The signed EIP-2612 permit data for the payment
+    function subsidizedTransferToken(
+        TransferIntent calldata _intent,
+        EIP2612SignatureTransferData calldata _signatureTransferData
     ) external;
 }
