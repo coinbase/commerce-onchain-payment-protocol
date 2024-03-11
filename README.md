@@ -9,16 +9,16 @@ It provides the following benefits over "traditional" cryptocurrency payments:
 
 ### Contract Deployments
 
-As of November 17, 2023, the Commerce Onchain Payment Protocol is deployed in the following locations:
+As of February 23, 2024, the Commerce Onchain Payment Protocol is deployed in the following locations:
 
-| Chain    | Environment    | Address                                      |
-| -------- | -------------- | -------------------------------------------- |
-| Ethereum | Mainnet        | `0x7915f087685fffD71608E5d118f3B70c27D9eF4e` |
-| Ethereum | Goerli Testnet | `0xE63Fb3A3cd48Df6A336560a91F78Ac6013557F7D` |
-| Polygon  | Mainnet        | `0x7f52269092F2a5EF06C36C91e46F9196deb90336` |
-| Polygon  | Mumbai Testnet | `0xe810B03C6a930A3A04F93a1Eb5B77Fa958522c98` |
-| Base     | Mainnet        | `0x9Bb4D44e6963260A1850926E8f6bEB8d5803836F` |
-| Base     | Goerli Testnet | `0x131642c019AF815Ae5F9926272A70C84AE5C37ab` |
+| Chain    | Environment     | Address                                      |
+| -------- | --------------- | -------------------------------------------- |
+| Ethereum | Mainnet         | `0x7915f087685fffD71608E5d118f3B70c27D9eF4e` (still the previous version) |
+| Ethereum | Sepolia Testnet | `0x1A8f790a10D26bAd97dB8Da887D212eA49461cCC` |
+| Polygon  | Mainnet         | `0xe63fb3a3cd48df6a336560a91f78ac6013557f7d` |
+| Polygon  | Mumbai Testnet  | `0xBfE2eac3BA7Ac0D8B84D2E13A3f7cdD4704599e1` |
+| Base     | Mainnet         | `0x131642c019AF815Ae5F9926272A70C84AE5C37ab` |
+| Base     | Sepolia Testnet | `0x1A8f790a10D26bAd97dB8Da887D212eA49461cCC` |
 
 Since the contract is non-upgradeable, these addresses will change when new
 versions are deployed.
