@@ -397,8 +397,10 @@ contract Transfers is Context, Ownable, Pausable, ReentrancyGuard, Sweepable, IT
             revert IncorrectCurrency(NATIVE_CURRENCY);
         }
 
+        uint256 neededAmount = _intent.recipientAmount + _intent.feeAmount;
+
         uint256 amountSwapped = 0;
-        if (msg.value > 0) {
+        if (neededAmount > 0) {
             // Perform the swap
             amountSwapped = swapTokens(_intent, address(wrappedNativeCurrency), msg.value, poolFeesTier);
         }
@@ -425,10 +427,11 @@ contract Transfers is Context, Ownable, Pausable, ReentrancyGuard, Sweepable, IT
             revert InvalidTransferDetails();
         }
 
+        uint256 neededAmount = _intent.recipientAmount + _intent.feeAmount;
         uint256 maxWillingToPay = _signatureTransferData.transferDetails.requestedAmount;
 
         uint256 amountSwapped = 0;
-        if (maxWillingToPay > 0) {
+        if (neededAmount > 0) {
             // Record our balance before (most likely zero) to detect fee-on-transfer tokens
             uint256 balanceBefore = tokenIn.balanceOf(address(this));
 
@@ -477,8 +480,10 @@ contract Transfers is Context, Ownable, Pausable, ReentrancyGuard, Sweepable, IT
             revert InsufficientAllowance(maxWillingToPay - allowance);
         }
 
+        uint256 neededAmount = _intent.recipientAmount + _intent.feeAmount;
+
         uint256 amountSwapped = 0;
-        if (maxWillingToPay > 0) {
+        if (neededAmount > 0) {
             // Record our balance before (most likely zero) to detect fee-on-transfer tokens
             uint256 balanceBefore = tokenIn.balanceOf(address(this));
 
