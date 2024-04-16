@@ -9,7 +9,7 @@ It provides the following benefits over "traditional" cryptocurrency payments:
 
 ### Contract Deployments
 
-As of February 23, 2024, the Commerce Onchain Payment Protocol is deployed in the following locations:
+As of April 16, 2024, the Commerce Onchain Payment Protocol is deployed in the following locations:
 
 | Chain    | Environment     | Address                                      |
 | -------- | --------------- | -------------------------------------------- |
