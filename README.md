@@ -13,11 +13,11 @@ As of February 23, 2024, the Commerce Onchain Payment Protocol is deployed in th
 
 | Chain    | Environment     | Address                                      |
 | -------- | --------------- | -------------------------------------------- |
-| Ethereum | Mainnet         | `0x7915f087685fffD71608E5d118f3B70c27D9eF4e` (still the previous version) |
+| Ethereum | Mainnet         | `0x3263bc4976C8c180bd5EB90a57ED1A2f1CFcAC67` |
 | Ethereum | Sepolia Testnet | `0x1A8f790a10D26bAd97dB8Da887D212eA49461cCC` |
-| Polygon  | Mainnet         | `0xe63fb3a3cd48df6a336560a91f78ac6013557f7d` |
+| Polygon  | Mainnet         | `0x551c6791c2f01c3Cd48CD35291Ac4339F206430d` |
 | Polygon  | Mumbai Testnet  | `0xBfE2eac3BA7Ac0D8B84D2E13A3f7cdD4704599e1` |
-| Base     | Mainnet         | `0x131642c019AF815Ae5F9926272A70C84AE5C37ab` |
+| Base     | Mainnet         | `0xeF0D482Daa16fa86776Bc582Aff3dFce8d9b8396` |
 | Base     | Sepolia Testnet | `0x1A8f790a10D26bAd97dB8Da887D212eA49461cCC` |
 
 Since the contract is non-upgradeable, these addresses will change when new
