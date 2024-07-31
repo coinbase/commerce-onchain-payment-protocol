@@ -121,9 +121,6 @@ interface ITransfers {
     // @param reason The error reason returned from the swap
     error SwapFailedBytes(bytes reason);
 
-    // @notice Raised when the EIP2612 signature is invalid
-    error InvalidEIP2612Signature();
-
     // @notice Send the exact amount of the native currency from the sender to the recipient.
     // @dev The intent's recipient currency must be the native currency.
     // @param _intent The intent which describes the transfer
