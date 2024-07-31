@@ -9,16 +9,16 @@ It provides the following benefits over "traditional" cryptocurrency payments:
 
 ### Contract Deployments
 
-As of April 16, 2024, the Commerce Onchain Payment Protocol is deployed in the following locations:
+As of July 31, 2024, the Commerce Onchain Payment Protocol is deployed in the following locations:
 
 | Chain    | Environment     | Address                                      |
 | -------- | --------------- | -------------------------------------------- |
-| Ethereum | Mainnet         | `0x3263bc4976C8c180bd5EB90a57ED1A2f1CFcAC67` |
-| Ethereum | Sepolia Testnet | `0x1A8f790a10D26bAd97dB8Da887D212eA49461cCC` |
-| Polygon  | Mainnet         | `0x551c6791c2f01c3Cd48CD35291Ac4339F206430d` |
-| Polygon  | Mumbai Testnet  | `0xBfE2eac3BA7Ac0D8B84D2E13A3f7cdD4704599e1` |
-| Base     | Mainnet         | `0xeF0D482Daa16fa86776Bc582Aff3dFce8d9b8396` |
-| Base     | Sepolia Testnet | `0x1A8f790a10D26bAd97dB8Da887D212eA49461cCC` |
+| Ethereum | Mainnet         | `0x1DAe28D7007703196d6f456e810F67C33b51b25C` |
+| Ethereum | Sepolia Testnet | `0x96A08D8e8631b6dB52Ea0cbd7232d9A85d239147` |
+| Polygon  | Mainnet         | `0xc2252Ce3348B8dAf90583E53e07Be53d3aE728FB` |
+| Polygon  | Amoy Testnet    | `0x1A8f790a10D26bAd97dB8Da887D212eA49461cCC` |
+| Base     | Mainnet         | `0xeADE6bE02d043b3550bE19E960504dbA14A14971` |
+| Base     | Sepolia Testnet | `0x96A08D8e8631b6dB52Ea0cbd7232d9A85d239147` |
 
 Since the contract is non-upgradeable, these addresses will change when new
 versions are deployed.
