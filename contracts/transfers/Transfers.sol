@@ -2,7 +2,6 @@
 pragma solidity ^0.8.17;
 
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
-import "@openzeppelin/contracts/interfaces/IERC2612.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import "@openzeppelin/contracts/security/Pausable.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
@@ -14,6 +13,7 @@ import {Commands as UniswapCommands} from "@uniswap/universal-router/contracts/l
 import {Constants as UniswapConstants} from "@uniswap/universal-router/contracts/libraries/Constants.sol";
 import "../interfaces/IWrappedNativeCurrency.sol";
 import "../interfaces/ITransfers.sol";
+import "../interfaces/IERC7597.sol";
 import "../utils/Sweepable.sol";
 import "../permit2/src/Permit2.sol";
 
@@ -527,9 +527,13 @@ contract Transfers is Context, Ownable, Pausable, ReentrancyGuard, Sweepable, IT
         }
 
         // Permit this contract to spend the payer's tokens
-        IERC2612 erc20Permit = IERC2612(_intent.recipientCurrency);
-        (uint8 v, bytes32 r, bytes32 s) = splitSignature(_signatureTransferData.signature);
-        erc20Permit.permit(_signatureTransferData.owner, address(this), neededAmount, _intent.deadline, v, r, s);
+        IERC7597(_intent.recipientCurrency).permit({
+            owner: _signatureTransferData.owner,
+            spender: address(this),
+            value: neededAmount,
+            deadline: _intent.deadline,
+            signature: _signatureTransferData.signature
+        });
 
         // Check the payer has approved this contract for a sufficient transfer
         uint256 allowance = erc20.allowance(_signatureTransferData.owner, address(this));
@@ -552,24 +556,6 @@ contract Transfers is Context, Ownable, Pausable, ReentrancyGuard, Sweepable, IT
         }
 
         succeedPayment(_intent, neededAmount, _intent.recipientCurrency, _signatureTransferData.owner);
-    }
-
-    function splitSignature(bytes calldata sig)
-        internal
-        pure
-        returns (
-            uint8 v,
-            bytes32 r,
-            bytes32 s
-        )
-    {
-        if (sig.length != 65) {
-            revert InvalidEIP2612Signature();
-        }
-
-        r = bytes32(sig[0:32]);
-        s = bytes32(sig[32:64]);
-        v = uint8(bytes1(sig[64:65]));
     }
 
     function swapTokens(
