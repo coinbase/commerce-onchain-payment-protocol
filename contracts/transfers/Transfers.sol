@@ -34,7 +34,7 @@ contract Transfers is Context, Ownable, Pausable, ReentrancyGuard, Sweepable, IT
     mapping(address => address) private feeDestinations;
 
     // @dev Map of operator addresses to a map of transfer intent ids that have been processed
-    mapping(address => mapping(bytes16 => bool)) private processedTransferIntents;
+    mapping(address => mapping(bytes32 => bool)) private processedTransferIntents;
 
     // @dev Represents native token of a chain (e.g. ETH or MATIC)
     address private immutable NATIVE_CURRENCY = address(0);

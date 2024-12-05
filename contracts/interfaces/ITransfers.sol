@@ -23,7 +23,7 @@ struct TransferIntent {
     address recipientCurrency;
     address refundDestination;
     uint256 feeAmount;
-    bytes16 id;
+    bytes32 id;
     address operator;
     bytes signature;
     bytes prefix;
@@ -52,7 +52,7 @@ interface ITransfers {
     // @param spentCurrency What currency the payer sent
     event Transferred(
         address indexed operator,
-        bytes16 id,
+        bytes32 id,
         address recipient,
         address sender,
         uint256 spentAmount,
