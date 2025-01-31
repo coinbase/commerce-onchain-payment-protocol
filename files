@@ -1,1 +1,2 @@
 git add docs/
+git add “*.txt”
