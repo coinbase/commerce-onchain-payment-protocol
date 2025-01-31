@@ -121,3 +121,23 @@ with details about:
 
 In the case of errors, a specific error type is returned with details about what
 went wrong.
+
+## Granting Write Permissions
+
+To grant write permissions to a user, follow these steps:
+
+1. **Navigate to the repository on GitHub**: Go to the main page of the repository where you want to grant write permissions.
+2. **Click on the "Settings" tab**: This tab is usually located at the top of the repository page.
+3. **Go to "Manage access"**: In the settings sidebar, find and click on "Manage access".
+4. **Invite a collaborator**: Click on the "Invite a collaborator" button.
+5. **Enter the username**: Type the GitHub username of the user you want to add as a collaborator.
+6. **Select the role**: Choose the appropriate role for the user. To grant write permissions, select "Write" or "Admin".
+7. **Send the invitation**: Click on the "Add <username> to this repository" button to send the invitation.
+
+### Verifying Write Permissions
+
+To verify if you have write permissions, you can follow these steps:
+
+* **Check repository settings**: Navigate to the repository on GitHub, click on the "Settings" tab, and then go to "Manage access". Here, you can see the list of collaborators and their permissions. Ensure your username is listed with "Write" or "Admin" permissions.
+* **Check your role**: If you are part of a team or organization, ensure that your role within the team has the necessary permissions. Sometimes, permissions are managed at the team level rather than the individual level.
+* **Contact repository owner**: If you are still unsure or unable to verify your permissions, contact the repository owner or an administrator. They can confirm your permissions and make any necessary adjustments.
