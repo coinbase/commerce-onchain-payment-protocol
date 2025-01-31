@@ -121,3 +121,25 @@ with details about:
 
 In the case of errors, a specific error type is returned with details about what
 went wrong.
+
+### Adding Collaborators with Write Access
+
+To add collaborators with write access in the repository settings on GitHub, follow these steps:
+
+1. Navigate to the main page of the repository on GitHub.
+2. Click on the "Settings" tab.
+3. In the left sidebar, click on "Manage access".
+4. Click on the "Invite a collaborator" button.
+5. Enter the username or email address of the person you want to add.
+6. Click on the "Add <username>" button.
+7. The invited collaborator will receive an email with an invitation to join the repository.
+8. Once the collaborator accepts the invitation, they will have write access to the repository.
+
+![Step 1](images/step1.png)
+![Step 2](images/step2.png)
+![Step 3](images/step3.png)
+![Step 4](images/step4.png)
+![Step 5](images/step5.png)
+![Step 6](images/step6.png)
+![Step 7](images/step7.png)
+![Step 8](images/step8.png)
