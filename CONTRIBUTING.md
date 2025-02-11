@@ -50,6 +50,24 @@ To maintain a consistent codebase, please adhere to the following coding standar
 - Avoid introducing unnecessary dependencies.
 - Keep your changes focused and avoid making unrelated changes in a single pull request.
 
+## Running Unit Tests
+
+To ensure code reliability and catch potential bugs early, we have implemented unit tests for all functions in the repository. Before submitting your pull request, please make sure to run the unit tests to verify that your changes do not introduce any issues. You can run the unit tests using the following command:
+
+```bash
+npx hardhat test
+```
+
+If you add new functionality or modify existing code, please include corresponding unit tests to cover your changes.
+
+## Using the Linter
+
+To enforce consistent code style and formatting across the repository, we have implemented a linter. Before submitting your pull request, please make sure to run the linter and fix any issues it reports. You can run the linter using the following command:
+
+```bash
+npx eslint .
+```
+
 ## Code of Conduct
 
 By participating in this project, you agree to abide by the [Code of Conduct](CODE_OF_CONDUCT.md). Please read and understand the Code of Conduct to ensure a welcoming and inclusive environment for all contributors.
