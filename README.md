@@ -226,3 +226,15 @@ To run the tests, follow these steps:
    ```bash
    npx hardhat test
    ```
+
+## Unit Tests
+
+Unit tests have been implemented for all functions in the repository to ensure code reliability and catch potential bugs early. These tests can be found in the `test` directory.
+
+## Linter
+
+A linter has been implemented to enforce consistent code style and formatting across the repository. To run the linter, use the following command:
+
+```bash
+npx eslint .
+```
