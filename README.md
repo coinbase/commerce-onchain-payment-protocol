@@ -121,3 +121,120 @@ with details about:
 
 In the case of errors, a specific error type is returned with details about what
 went wrong.
+
+## Detailed Usage Examples
+
+### Example 1: Paying with ETH
+
+In this example, the merchant wants to receive ETH and the payer wants to pay with ETH.
+
+1. The operator creates a `TransferIntent` with the following details:
+   - Merchant's address: `0xMerchantAddress`
+   - Currency: ETH
+   - Amount: 1 ETH
+   - Deadline: 24 hours from now
+   - Payer's address: `0xPayerAddress`
+   - Chain: Ethereum Mainnet
+   - Refund address: `0xRefundAddress`
+   - Operator's address: `0xOperatorAddress`
+   - Fee: 0.01 ETH
+   - Unique ID: `unique-payment-id`
+   - Signature: `operator-signature`
+
+2. The payer calls the `transferNative` method on the Transfers contract with the `TransferIntent` and sends 1.01 ETH.
+
+3. The contract verifies the `TransferIntent`, ensures the correct amount is sent, and transfers 1 ETH to the merchant and 0.01 ETH to the operator.
+
+### Example 2: Paying with a Token
+
+In this example, the merchant wants to receive a token (e.g., USDC) and the payer wants to pay with the same token.
+
+1. The operator creates a `TransferIntent` with the following details:
+   - Merchant's address: `0xMerchantAddress`
+   - Currency: USDC
+   - Amount: 100 USDC
+   - Deadline: 24 hours from now
+   - Payer's address: `0xPayerAddress`
+   - Chain: Ethereum Mainnet
+   - Refund address: `0xRefundAddress`
+   - Operator's address: `0xOperatorAddress`
+   - Fee: 1 USDC
+   - Unique ID: `unique-payment-id`
+   - Signature: `operator-signature`
+
+2. The payer calls the `transferToken` method on the Transfers contract with the `TransferIntent` and the necessary Permit2 signature.
+
+3. The contract verifies the `TransferIntent`, ensures the payer has enough tokens, and transfers 100 USDC to the merchant and 1 USDC to the operator.
+
+### Example 3: Paying with ETH and Receiving a Token
+
+In this example, the merchant wants to receive a token (e.g., USDC) and the payer wants to pay with ETH.
+
+1. The operator creates a `TransferIntent` with the following details:
+   - Merchant's address: `0xMerchantAddress`
+   - Currency: USDC
+   - Amount: 100 USDC
+   - Deadline: 24 hours from now
+   - Payer's address: `0xPayerAddress`
+   - Chain: Ethereum Mainnet
+   - Refund address: `0xRefundAddress`
+   - Operator's address: `0xOperatorAddress`
+   - Fee: 1 USDC
+   - Unique ID: `unique-payment-id`
+   - Signature: `operator-signature`
+
+2. The payer calls the `swapAndTransferUniswapV3Native` method on the Transfers contract with the `TransferIntent`, the necessary Uniswap pool fee tier, and sends the equivalent amount of ETH.
+
+3. The contract swaps the ETH for USDC on Uniswap, verifies the `TransferIntent`, and transfers 100 USDC to the merchant and 1 USDC to the operator.
+
+## Setting Up the Project Locally
+
+To set up the project locally, follow these steps:
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/coinbase/commerce-onchain-payment-protocol.git
+   cd commerce-onchain-payment-protocol
+   ```
+
+2. Install the necessary dependencies:
+   ```bash
+   npm install
+   ```
+
+3. Compile the contracts:
+   ```bash
+   npx hardhat compile
+   ```
+
+4. Deploy the contracts to a local network:
+   ```bash
+   npx hardhat node
+   npx hardhat run scripts/deploy.js --network localhost
+   ```
+
+## Running Tests
+
+To run the tests, follow these steps:
+
+1. Make sure the local network is running:
+   ```bash
+   npx hardhat node
+   ```
+
+2. Run the tests:
+   ```bash
+   npx hardhat test
+   ```
+
+## Unit Tests
+
+Unit tests have been implemented for all functions in the repository to ensure code reliability and catch potential bugs early. These tests can be found in the `test` directory.
+
+## Linter
+
+A linter has been implemented to enforce consistent code style and formatting across the repository. To run the linter, use the following command:
+
+```bash
+npx eslint .
+```
