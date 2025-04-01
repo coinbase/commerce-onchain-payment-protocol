@@ -121,3 +121,203 @@ with details about:
 
 In the case of errors, a specific error type is returned with details about what
 went wrong.
+
+## Detailed Explanations and Examples for Each Function in `contracts/transfers/Transfers.sol`
+
+### `transferNative`
+
+The `transferNative` function handles native currency transfers. It ensures that the recipient receives the exact amount of native currency specified in the `TransferIntent`.
+
+Example usage:
+```solidity
+TransferIntent memory intent = TransferIntent({
+    recipientAmount: 1 ether,
+    deadline: block.timestamp + 1 days,
+    recipient: payable(0xRecipientAddress),
+    recipientCurrency: address(0),
+    refundDestination: address(0),
+    feeAmount: 0.01 ether,
+    id: bytes16(0),
+    operator: 0xOperatorAddress,
+    signature: bytes(""),
+    prefix: bytes("")
+});
+
+transfersContract.transferNative{value: 1.01 ether}(intent);
+```
+
+### `transferToken`
+
+The `transferToken` function handles ERC-20 token transfers. It ensures that the recipient receives the exact amount of tokens specified in the `TransferIntent`.
+
+Example usage:
+```solidity
+TransferIntent memory intent = TransferIntent({
+    recipientAmount: 1000 * 10**18,
+    deadline: block.timestamp + 1 days,
+    recipient: payable(0xRecipientAddress),
+    recipientCurrency: 0xTokenAddress,
+    refundDestination: address(0),
+    feeAmount: 10 * 10**18,
+    id: bytes16(0),
+    operator: 0xOperatorAddress,
+    signature: bytes(""),
+    prefix: bytes("")
+});
+
+Permit2SignatureTransferData memory signatureTransferData = Permit2SignatureTransferData({
+    permit: ISignatureTransfer.PermitTransferFrom({
+        permitted: ISignatureTransfer.Permit({
+            token: 0xTokenAddress,
+            amount: 1010 * 10**18
+        }),
+        nonce: 0,
+        deadline: block.timestamp + 1 days
+    }),
+    transferDetails: ISignatureTransfer.SignatureTransferDetails({
+        to: address(transfersContract),
+        requestedAmount: 1010 * 10**18
+    }),
+    signature: bytes("")
+});
+
+transfersContract.transferToken(intent, signatureTransferData);
+```
+
+### `unwrapAndTransfer`
+
+The `unwrapAndTransfer` function handles wrapped native currency transfers. It ensures that the recipient receives the exact amount of native currency specified in the `TransferIntent`.
+
+Example usage:
+```solidity
+TransferIntent memory intent = TransferIntent({
+    recipientAmount: 1 ether,
+    deadline: block.timestamp + 1 days,
+    recipient: payable(0xRecipientAddress),
+    recipientCurrency: address(0),
+    refundDestination: address(0),
+    feeAmount: 0.01 ether,
+    id: bytes16(0),
+    operator: 0xOperatorAddress,
+    signature: bytes(""),
+    prefix: bytes("")
+});
+
+Permit2SignatureTransferData memory signatureTransferData = Permit2SignatureTransferData({
+    permit: ISignatureTransfer.PermitTransferFrom({
+        permitted: ISignatureTransfer.Permit({
+            token: 0xWrappedNativeCurrencyAddress,
+            amount: 1.01 ether
+        }),
+        nonce: 0,
+        deadline: block.timestamp + 1 days
+    }),
+    transferDetails: ISignatureTransfer.SignatureTransferDetails({
+        to: address(transfersContract),
+        requestedAmount: 1.01 ether
+    }),
+    signature: bytes("")
+});
+
+transfersContract.unwrapAndTransfer(intent, signatureTransferData);
+```
+
+### `swapAndTransferUniswapV3Native`
+
+The `swapAndTransferUniswapV3Native` function handles swaps from native currency to another token. It ensures that the recipient receives the exact amount of tokens specified in the `TransferIntent`.
+
+Example usage:
+```solidity
+TransferIntent memory intent = TransferIntent({
+    recipientAmount: 1000 * 10**18,
+    deadline: block.timestamp + 1 days,
+    recipient: payable(0xRecipientAddress),
+    recipientCurrency: 0xTokenAddress,
+    refundDestination: address(0),
+    feeAmount: 10 * 10**18,
+    id: bytes16(0),
+    operator: 0xOperatorAddress,
+    signature: bytes(""),
+    prefix: bytes("")
+});
+
+transfersContract.swapAndTransferUniswapV3Native{value: 1.01 ether}(intent, 3000);
+```
+
+### `swapAndTransferUniswapV3Token`
+
+The `swapAndTransferUniswapV3Token` function handles swaps from one token to another. It ensures that the recipient receives the exact amount of tokens specified in the `TransferIntent`.
+
+Example usage:
+```solidity
+TransferIntent memory intent = TransferIntent({
+    recipientAmount: 1000 * 10**18,
+    deadline: block.timestamp + 1 days,
+    recipient: payable(0xRecipientAddress),
+    recipientCurrency: 0xTokenAddress,
+    refundDestination: address(0),
+    feeAmount: 10 * 10**18,
+    id: bytes16(0),
+    operator: 0xOperatorAddress,
+    signature: bytes(""),
+    prefix: bytes("")
+});
+
+Permit2SignatureTransferData memory signatureTransferData = Permit2SignatureTransferData({
+    permit: ISignatureTransfer.PermitTransferFrom({
+        permitted: ISignatureTransfer.Permit({
+            token: 0xTokenInAddress,
+            amount: 1010 * 10**18
+        }),
+        nonce: 0,
+        deadline: block.timestamp + 1 days
+    }),
+    transferDetails: ISignatureTransfer.SignatureTransferDetails({
+        to: address(transfersContract),
+        requestedAmount: 1010 * 10**18
+    }),
+    signature: bytes("")
+});
+
+transfersContract.swapAndTransferUniswapV3Token(intent, signatureTransferData, 3000);
+```
+
+## Troubleshooting
+
+### Common Issues and Solutions
+
+#### Issue: Transfer fails with `InvalidSignature` error
+
+**Solution:** Ensure that the `TransferIntent` is correctly signed by the operator. Verify that the signature and prefix (if any) are correct.
+
+#### Issue: Transfer fails with `ExpiredIntent` error
+
+**Solution:** Ensure that the `TransferIntent` has not passed its deadline. The `deadline` field should be a future timestamp.
+
+#### Issue: Transfer fails with `NullRecipient` error
+
+**Solution:** Ensure that the `recipient` field in the `TransferIntent` is not the zero address.
+
+#### Issue: Transfer fails with `AlreadyProcessed` error
+
+**Solution:** Ensure that the `TransferIntent` has not already been processed. Each `TransferIntent` should have a unique `id`.
+
+#### Issue: Transfer fails with `IncorrectCurrency` error
+
+**Solution:** Ensure that the `recipientCurrency` field in the `TransferIntent` matches the expected currency for the transfer function being used.
+
+#### Issue: Transfer fails with `InsufficientBalance` error
+
+**Solution:** Ensure that the payer has enough balance of the specified currency to cover the `recipientAmount` and `feeAmount`.
+
+#### Issue: Transfer fails with `InsufficientAllowance` error
+
+**Solution:** Ensure that the payer has approved the necessary allowance for the transfer function being used.
+
+#### Issue: Transfer fails with `InexactTransfer` error
+
+**Solution:** Ensure that the transfer amount matches the expected amount. This error can occur with fee-on-transfer tokens.
+
+#### Issue: Swap fails with `SwapFailedString` or `SwapFailedBytes` error
+
+**Solution:** Ensure that the swap parameters are correct and that there is sufficient liquidity on Uniswap V3 for the swap. Verify the error message for more details.
