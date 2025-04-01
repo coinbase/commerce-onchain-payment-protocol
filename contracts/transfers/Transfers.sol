@@ -1,3 +1,4 @@
+```solidity
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.17;
 
@@ -144,6 +145,10 @@ contract Transfers is Context, Ownable, Pausable, ReentrancyGuard, Sweepable, IT
     }
 
     // @inheritdoc ITransfers
+    /**
+     * @notice Handles native currency transfers.
+     * @param _intent The intent which describes the transfer
+     */
     function transferNative(TransferIntent calldata _intent)
         external
         payable
@@ -166,6 +171,11 @@ contract Transfers is Context, Ownable, Pausable, ReentrancyGuard, Sweepable, IT
     }
 
     // @inheritdoc ITransfers
+    /**
+     * @notice Handles ERC-20 token transfers.
+     * @param _intent The intent which describes the transfer
+     * @param _signatureTransferData The signed Permit2 transfer data for the payment
+     */
     function transferToken(
         TransferIntent calldata _intent,
         Permit2SignatureTransferData calldata _signatureTransferData
@@ -217,6 +227,10 @@ contract Transfers is Context, Ownable, Pausable, ReentrancyGuard, Sweepable, IT
     }
 
     // @inheritdoc ITransfers
+    /**
+     * @notice Handles ERC-20 token transfers with pre-approval.
+     * @param _intent The intent which describes the transfer
+     */
     function transferTokenPreApproved(TransferIntent calldata _intent)
         external
         override
@@ -262,7 +276,10 @@ contract Transfers is Context, Ownable, Pausable, ReentrancyGuard, Sweepable, IT
     }
 
     // @inheritdoc ITransfers
-    // @dev Wraps msg.value into wrapped token and transfers to recipient.
+    /**
+     * @notice Wraps msg.value into wrapped token and transfers to recipient.
+     * @param _intent The intent which describes the transfer
+     */
     function wrapAndTransfer(TransferIntent calldata _intent)
         external
         payable
@@ -290,8 +307,11 @@ contract Transfers is Context, Ownable, Pausable, ReentrancyGuard, Sweepable, IT
     }
 
     // @inheritdoc ITransfers
-    // @dev Requires _msgSender() to have approved this contract to use the wrapped token.
-    // @dev Unwraps into native token and transfers native token (e.g. ETH) to _intent.recipient.
+    /**
+     * @notice Unwraps into native token and transfers native token (e.g. ETH) to _intent.recipient.
+     * @param _intent The intent which describes the transfer
+     * @param _signatureTransferData The signed Permit2 transfer data for the payment
+     */
     function unwrapAndTransfer(
         TransferIntent calldata _intent,
         Permit2SignatureTransferData calldata _signatureTransferData
@@ -337,8 +357,10 @@ contract Transfers is Context, Ownable, Pausable, ReentrancyGuard, Sweepable, IT
     }
 
     // @inheritdoc ITransfers
-    // @dev Requires _msgSender() to have approved this contract to use the wrapped token.
-    // @dev Unwraps into native token and transfers native token (e.g. ETH) to _intent.recipient.
+    /**
+     * @notice Unwraps into native token and transfers native token (e.g. ETH) to _intent.recipient.
+     * @param _intent The intent which describes the transfer
+     */
     function unwrapAndTransferPreApproved(TransferIntent calldata _intent)
         external
         override
@@ -381,6 +403,11 @@ contract Transfers is Context, Ownable, Pausable, ReentrancyGuard, Sweepable, IT
     \*------------------------------------------------------------------*/
 
     // @inheritdoc ITransfers
+    /**
+     * @notice Handles swaps from native currency to another token.
+     * @param _intent The intent which describes the transfer
+     * @param poolFeesTier The Uniswap pool fee the user wishes to pay. See: https://docs.uniswap.org/protocol/concepts/V3-overview/fees#pool-fees-tiers
+     */
     function swapAndTransferUniswapV3Native(TransferIntent calldata _intent, uint24 poolFeesTier)
         external
         payable
@@ -410,6 +437,12 @@ contract Transfers is Context, Ownable, Pausable, ReentrancyGuard, Sweepable, IT
     }
 
     // @inheritdoc ITransfers
+    /**
+     * @notice Handles swaps from one token to another.
+     * @param _intent The intent which describes the transfer
+     * @param _signatureTransferData The signed Permit2 transfer data for the payment
+     * @param poolFeesTier The Uniswap pool fee the user wishes to pay. See: https://docs.uniswap.org/protocol/concepts/V3-overview/fees#pool-fees-tiers
+     */
     function swapAndTransferUniswapV3Token(
         TransferIntent calldata _intent,
         Permit2SignatureTransferData calldata _signatureTransferData,
@@ -455,6 +488,13 @@ contract Transfers is Context, Ownable, Pausable, ReentrancyGuard, Sweepable, IT
     }
 
     // @inheritdoc ITransfers
+    /**
+     * @notice Handles swaps from one token to another with pre-approval.
+     * @param _intent The intent which describes the transfer
+     * @param _tokenIn The currency address which the sender wishes to pay for the intent.
+     * @param maxWillingToPay The maximum amount of _tokenIn the sender is willing to pay.
+     * @param poolFeesTier The Uniswap pool fee the user wishes to pay. See: https://docs.uniswap.org/protocol/concepts/V3-overview/fees#pool-fees-tiers
+     */
     function swapAndTransferUniswapV3TokenPreApproved(
         TransferIntent calldata _intent,
         address _tokenIn,
@@ -502,6 +542,11 @@ contract Transfers is Context, Ownable, Pausable, ReentrancyGuard, Sweepable, IT
     }
 
     // @inheritdoc ITransfers
+    /**
+     * @notice Allows the sender to pay for an intent with gasless transaction
+     * @param _intent The intent which describes the transfer
+     * @param _signatureTransferData The signed EIP-2612 permit data for the payment
+     */
     function subsidizedTransferToken(
         TransferIntent calldata _intent,
         EIP2612SignatureTransferData calldata _signatureTransferData
@@ -812,3 +857,4 @@ contract Transfers is Context, Ownable, Pausable, ReentrancyGuard, Sweepable, IT
         require(msg.sender == address(wrappedNativeCurrency), "only payable for unwrapping");
     }
 }
+```
