@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.17;
 
-import "../permit2/src/interfaces/ISignatureTransfer.sol";
+import "../../lib/permit2/src/interfaces/ISignatureTransfer.sol";
 
 // @notice Description of the transfer
 // @member recipientAmount Amount of currency to transfer

@@ -1,0 +1,37 @@
+{
+  "name": "commerce-onchain-payment-protocol",
+  "version": "1.0.0",
+  "description": "The Coinbase Commerce Onchain Payment Protocol allows payers and merchants to transact using the blockchain as a settlement layer and source of truth.\r It provides the following benefits over \"traditional\" cryptocurrency payments:",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nerses-asaturyan/commerce-onchain-payment-protocol.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/nerses-asaturyan/commerce-onchain-payment-protocol/issues"
+  },
+  "homepage": "https://github.com/nerses-asaturyan/commerce-onchain-payment-protocol#readme",
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^6.1.0",
+    "@types/node": "^24.9.2",
+    "dotenv": "^17.2.3",
+    "hardhat": "^2.26.3",
+    "hardhat-gas-reporter": "^2.3.0",
+    "hardhat-preprocessor": "^0.1.5",
+    "solidity-coverage": "^0.8.16",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3"
+  },
+  "dependencies": {
+    "@openzeppelin/contracts": "^4.9.6",
+    "@uniswap/universal-router": "^1.6.0",
+    "solmate": "^6.8.0"
+  }
+}

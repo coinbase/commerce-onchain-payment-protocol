@@ -15,7 +15,8 @@ import "../interfaces/IWrappedNativeCurrency.sol";
 import "../interfaces/ITransfers.sol";
 import "../interfaces/IERC7597.sol";
 import "../utils/Sweepable.sol";
-import "../permit2/src/Permit2.sol";
+import "../../lib/permit2/src/Permit2.sol";
+
 
 // Uniswap error selectors, used to surface information when swaps fail
 // Pulled from @uniswap/universal-router/out/V3SwapRouter.sol/V3SwapRouter.json after compiling with forge
